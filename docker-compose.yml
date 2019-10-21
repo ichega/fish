@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  bot:
+    build: .
+    command: python3 fish.py
+    volumes:
+      - type: bind
+        source: .
+        target: /app/
+
+
