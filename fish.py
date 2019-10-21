@@ -8,7 +8,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 
 from config import Config
-
+from logics.base import hello
 
 
 def main():
@@ -72,15 +72,22 @@ def main():
             #     attachments.append(
             #         'photo{}_{}'.format(photo['owner_id'], photo['id'])
             #     )
-            text = "Hello"
+            text = ""
+            print(event.text)
+            found, text1 = hello(event.user_id, event.text)
+            if found:
+                text = text1
+            else:
 
-            vk.messages.send(
-                user_id=event.user_id,
-                # attachment=','.join(attachments),
-                random_id=get_random_id(),
-                message=text
-            )
-            print('ok')
+                print("Not found")
+            if text != "":
+                vk.messages.send(
+                    user_id=event.user_id,
+                    # attachment=','.join(attachments),
+                    random_id=get_random_id(),
+                    message=text
+                )
+
 
 
 if __name__ == '__main__':
