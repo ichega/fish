@@ -4,11 +4,22 @@ import requests
 
 import vk_api
 from vk_api import VkUpload
+from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
 
 from config import Config
-from logics.base import hello
+from logics.base import *
+
+chat_id = ""
+
+def send_message(vk, id, text):
+    vk.messages.send(
+        peer_id=id,
+        # attachment=','.join(attachments),
+        random_id=get_random_id(),
+        message=text
+    )
 
 
 def main():
@@ -37,11 +48,14 @@ def main():
     vk = vk_session.get_api()
 
     # upload = VkUpload(vk_session)  # Для загрузки изображений
-    longpoll = VkLongPoll(vk_session)
+    longpoll = VkBotLongPoll(vk_session, "175410603")
 
     for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
-            print('id{}: "{}"'.format(event.user_id, event.text), end=' ')
+        print(event)
+        print(event.object.peer_id)
+
+        if event.type == VkBotEventType.MESSAGE_NEW and event.object.text:
+            # print('id{}: "{}"'.format(event.from_id, event.text), end=' ')
 
             # response = session.get(
             #     'http://api.duckduckgo.com/',
@@ -73,20 +87,38 @@ def main():
             #         'photo{}_{}'.format(photo['owner_id'], photo['id'])
             #     )
             text = ""
-            print(event.text)
-            found, text1 = hello(event.user_id, event.text)
+            print(event.object.text)
+            found, text1 = hello(event.object.peer_id, event.object.text)
             if found:
                 text = text1
             else:
-
                 print("Not found")
+            found, text1 = jekakill("", event.object.text)
+            if found:
+                text = text1
+            else:
+                print("Not found")
+
+            found, text1 = writetoivan("", event.object.text)
+            if found:
+                text = text1
+            else:
+                print("Not found")
+            found, text1 = check(None, event.object.text, "рыба кто уебок", "Камол, когда говорит что ты хочешь писать контрольную по КМ..")
+            if found:
+                text = text1
+            else:
+                print("Not found")
+            found, text1 = check_fuck(None, event.object.text)
+            if found:
+                text = text1
+            else:
+                print("Not found")
+            # if event.object.peer_id != "2000000001":
+            #     hard_print(event.object.text)
+
             if text != "":
-                vk.messages.send(
-                    user_id=event.user_id,
-                    # attachment=','.join(attachments),
-                    random_id=get_random_id(),
-                    message=text
-                )
+                send_message(vk, event.object.peer_id, text)
 
 
 
