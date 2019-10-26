@@ -46,9 +46,9 @@ def main():
     vk_session = vk_api.VkApi(token=Config.token)
 
     vk = vk_session.get_api()
-
     # upload = VkUpload(vk_session)  # Для загрузки изображений
     longpoll = VkBotLongPoll(vk_session, "175410603")
+
 
     for event in longpoll.listen():
         print(event)
