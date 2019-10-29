@@ -5,7 +5,6 @@ fucks = open('names.txt', 'r').read().split()
 aliases = [
     "рыба", "Рыба", "топленая", "Топленая", "fish", "Fish",
     "РЫБА", "ТОПЛЕНАЯ", "FISH",
-
 ]
 
 def rand_fucks():
@@ -61,23 +60,36 @@ def jekakill(user_id, message):
     try:
         words = str(message).split()
         if words[0] in aliases:
-            if words[1] in ["агр", "агрись", "жекакил"]:
-                return True, f"Я сама не могу, но ты скажи жеке, что он - '{fucks[random.randint(0, len(fucks)-1)]}'"
+            if words[1] in ["агр", "агрись"]:
+                return True, f"Держи оскорбление - '{fucks[random.randint(0, len(fucks)-1)]}'"
 
     except:
         return False, ""
     return False, ""
 
 def writetoivan(user_id, message):
-    if message == "рыба напиши ване":
-        text = f"@id362326531 (Иван), я знаю слово '{fucks[random.randint(0, len(fucks)-1)]}', а ты что?"
+    try:
+        words = message.split()
+        conditions = [
+            words[0] == 'рыба',
+            words[1] == 'напиши',
+            len(words) > 3
+        ]
+        id = words[2]
+        text_for_user = " ".join(words[3:])
+        if all(conditions):
+            text = f"@{id}, {text_for_user}"
 
 
 
 
-        return True, text
-    else:
+            return True, text
+        else:
+            return False, ""
+    except Exception as e:
+        print('ERROR: ', e)
         return False, ""
+
 
 def check(id, message, question, answer):
     if message == question:

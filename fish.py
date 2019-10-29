@@ -54,7 +54,9 @@ def main():
         print(event)
         print(event.object.peer_id)
 
+
         if event.type == VkBotEventType.MESSAGE_NEW and event.object.text:
+
             # print('id{}: "{}"'.format(event.from_id, event.text), end=' ')
 
             # response = session.get(
