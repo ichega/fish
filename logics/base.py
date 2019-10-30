@@ -1,6 +1,7 @@
 import re
 import random
-
+from logics.studlance import get_projects
+from logics.backgroundtask import BackgroundTask
 fucks = open('names.txt', 'r').read().split()
 aliases = [
     "рыба", "Рыба", "топленая", "Топленая", "fish", "Fish",
@@ -112,16 +113,25 @@ def check_fuck(id, message):
         'В тихом омуте бомжи топятся..а прости, это ты',
     ]
     if found:
-        return True, answers[random.randint(0, len(answers)-1)]
+        # return True, answers[random.randint(0, len(answers)-1)]
+        return True, "НЕ МАТЕРИСЬ СУКА"
     else:
         return False, ""
 
+
+def check_studlance(message):
+    try:
+        if 'studlancecheck' in message:
+            keywords = message.split()
+            task =BackgroundTask(get_projects, )
+            #todo допилить
+    except Exception as e:
+        return False, f"Error, {e}"
 
 
 
 def hard_print(message):
     return True, message
-
 
 
 
